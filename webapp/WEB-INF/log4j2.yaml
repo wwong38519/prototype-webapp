@@ -1,0 +1,31 @@
+---
+configuration:
+  status: debug
+
+  appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      patternLayout:
+        pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+    RollingFile:
+      name: File
+      fileName: ${web:initParam.log-path}/file.log
+      filePattern: ${web:initParam.log-path}/file-%d{yyyy-MM-dd-HH-mm}.log
+      patternLayout:
+        pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %class{36} - %msg%n"
+      policies:
+      - TimeBasedTriggeringPolicy:
+          interval: 1
+          modulate: true
+
+  loggers:
+    root:
+      level: info
+      appenderRef:
+      - ref: Console
+    logger:
+      name: controller
+      level: debug
+      appenderRef:
+      - ref: File
